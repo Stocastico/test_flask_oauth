@@ -1,6 +1,6 @@
 from flask_login import UserMixin, current_user
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin, SQLAlchemyBackend
-from oauth_app import db, login_manager, blueprint
+from oauth_app import db, login_manager, bp_github, bp_google
 
 @login_manager.user_loader
 def load_user(id):
@@ -17,4 +17,5 @@ class OAuth(OAuthConsumerMixin, db.Model):
     user = db.relationship(User)
 
 # setup SQLAlchemy backend
-blueprint.backend = SQLAlchemyBackend(OAuth, db.session, user=current_user)
+bp_github.backend = SQLAlchemyBackend(OAuth, db.session, user=current_user)
+bp_google.backend = SQLAlchemyBackend(OAuth, db.session, user=current_user)
