@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, current_user
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,6 +23,13 @@ bp_google = make_google_blueprint(
 )
 app.register_blueprint(bp_google, url_prefix="/google_login")
 
+bp_twitter = make_twitter_blueprint(
+    api_key="dnhKngpFnwe64pY6NdlxePRUO",
+    api_secret="nk9Q4lj7yubGyHypqCCXhfvspj0tGDyGMD7oEzf4zvpU8ZB165",
+)
+app.register_blueprint(bp_twitter, url_prefix="/twitter_login")
+
+
 # setup database
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -30,6 +38,7 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_github_view = 'github.login'
 login_manager.login_google_view = 'google.login'
+login_manager.login_twitter_view = 'twitter.login'
 
 # hook up extensions to app
 db.init_app(app)
